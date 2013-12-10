@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+  android:background="#CC000000"
+    android:orientation="vertical" >
+
+   
+     <ImageButton
+         android:id="@+id/resume"
+         android:layout_width="160dp"
+         android:layout_height="65dp"
+         android:layout_above="@+id/quit"
+         android:layout_centerHorizontal="true"
+         android:background="@null"
+         android:src="@drawable/resume" />
+
+     <ImageButton
+         android:id="@+id/quit"
+         android:layout_width="160dp"
+         android:layout_height="65dp"
+         android:layout_above="@+id/menu"
+         android:layout_alignParentBottom="true"
+           android:layout_marginBottom="150dp"
+         android:layout_alignLeft="@+id/resume"
+         android:background="@null"
+         android:src="@drawable/quit" />
+
+   
+</RelativeLayout>

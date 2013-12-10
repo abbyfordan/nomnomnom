@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">nomnomgui</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="gender">Are you a BOY or a GIRL?</string>
+    <string name="ins">INSERT INSTRUCTIONS HERE &lt;3</string>
+    <string-array name="breakdown">
+        <item >Fries</item>
+        <item >Burger</item>
+    </string-array>
+
+</resources>

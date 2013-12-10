@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+     android:id="@+id/game_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgame"
+    android:orientation="vertical" >
+
+   
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:typeface="sans"
+        android:textColor="#CC3300"
+        android:layout_centerHorizontal="true"
+        android:textSize="25sp"
+     
+        android:text="60" />
+
+<!--   <TextView
+        android:id="@+id/level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="level"
+        android:typeface="sans"
+        android:textColor="#CC3333"
+        android:textSize="20sp" /> -->
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="25dp"
+        android:text="0000"
+        android:typeface="sans"
+        android:textColor="#CC3300"
+        android:textSize="20sp" />  
+
+    <ImageButton
+        android:id="@+id/pause"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/pipe3"
+        android:layout_marginTop="-5dp"
+        android:background="@null"
+        android:src="@drawable/pause" />
+
+     <ImageView
+         android:id="@+id/laraopen"
+         android:layout_width="64dp"
+         android:layout_height="150dp"
+         android:layout_alignParentBottom="true"
+         android:layout_alignParentLeft="true"
+         android:layout_marginTop="95dp"
+         android:background="@null"
+         android:src="@drawable/laraopen" />
+
+</RelativeLayout>
