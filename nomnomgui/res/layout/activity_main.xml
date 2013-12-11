@@ -19,20 +19,11 @@
         android:layout_width="140dp"
         android:layout_height="50dp"
          android:layout_gravity="center_horizontal"
-        android:layout_marginTop="-255dp"
+        android:layout_marginTop="-235dp"
         android:background="@null"
         android:src="@drawable/start" />
 
     <ImageButton
-        android:id="@+id/ins"
-          android:layout_width="140dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="0dp"     
-        android:src="@drawable/ins" 
-        android:background="@null" />
-    
-     <ImageButton
         android:id="@+id/aboutus"
           android:layout_width="140dp"
         android:layout_height="50dp"
@@ -40,5 +31,14 @@
         android:layout_marginTop="0dp"     
         android:src="@drawable/aboutus" 
         android:background="@null" />
+    
+   <!--   <ImageButton
+        android:id="@+id/aboutus"
+          android:layout_width="140dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="0dp"     
+        android:src="@drawable/aboutus" 
+        android:background="@null" /> -->
 
 </LinearLayout>

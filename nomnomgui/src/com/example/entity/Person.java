@@ -5,8 +5,8 @@ import android.os.Parcelable;
 
 public class Person implements Parcelable {
 	private String gender;
-	private int foodIntakeBad;
-	private int foodIntakeGood;
+	private int foodIntake;
+
 	// images
 	private int imageID;
 	private int evaluationImageID;
@@ -35,8 +35,7 @@ public class Person implements Parcelable {
 	public void writeToParcel(Parcel out, int arg1) {
 		// TODO Auto-generated method stub
 		out.writeString(gender);
-		out.writeInt(foodIntakeBad);
-		out.writeInt(foodIntakeGood);
+		out.writeInt(foodIntake);
 		out.writeInt(imageID);
 		out.writeInt(evaluationImageID);
 	}
@@ -53,8 +52,7 @@ public class Person implements Parcelable {
 
 	private void readFromParcel(Parcel in) {
 		gender = in.readString();
-		foodIntakeBad = in.readInt();
-		foodIntakeGood = in.readInt();
+		foodIntake = in.readInt();
 		imageID = in.readInt();
 		evaluationImageID = in.readInt();
 	}
@@ -62,18 +60,7 @@ public class Person implements Parcelable {
 	public String getGender() {
 		return gender;
 	}
-	public int getFoodIntakeBad(){
-		return foodIntakeBad;
-	}
-	public void setFoodIntakeBad(int foodIntakeBad){
-		this.foodIntakeBad = foodIntakeBad;
-	}
-	public int getFoodIntakeGood(){
-		return foodIntakeGood;
-	}
-	public void setFoodIntakeGood(int foodIntakeGood){
-		this.foodIntakeGood = foodIntakeGood;
-	}
+
 	public void setGender(String gender) {
 		this.gender = gender;
 	}

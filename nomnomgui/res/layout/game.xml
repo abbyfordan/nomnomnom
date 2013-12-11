@@ -58,8 +58,20 @@
          android:layout_height="150dp"
          android:layout_alignParentBottom="true"
          android:layout_alignParentLeft="true"
+         android:layout_marginTop="0dp"
+         android:background="@null"
+         android:src="@drawable/laraopen"
+         />
+     
+     <!--   <ImageView
+         android:id="@+id/cribeopen"
+         android:layout_width="64dp"
+         android:layout_height="150dp"
+         android:layout_alignParentBottom="true"
+         android:layout_alignParentLeft="true"
          android:layout_marginTop="95dp"
          android:background="@null"
-         android:src="@drawable/laraopen" />
+         android:src="@drawable/cribeopen"
+         /> -->
 
 </RelativeLayout>

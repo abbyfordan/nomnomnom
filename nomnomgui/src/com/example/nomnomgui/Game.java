@@ -1,9 +1,15 @@
 package com.example.nomnomgui;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -48,34 +54,35 @@ import com.example.nomnomgui.R;
 
 @SuppressLint("NewApi")
 public class Game extends Activity implements OnTouchListener {
-	Person p;
-
+	String gender = "", stage = "";
+	int score = 0,goodIntake = 0,badIntake = 0;
+	
 	private Food[] cloud1 = { new Food("glow", "apple", R.drawable.apple),
 			new Food("glow", "good", R.drawable.banana),
-			new Food("xx", "bad", R.drawable.burger),
+			new Food("bad", "bad", R.drawable.burger),
 			new Food("go", "good", R.drawable.bread),
-			new Food("xx", "bad", R.drawable.cake),
-			new Food("xx", "bad", R.drawable.candy),
+			new Food("bad", "bad", R.drawable.cake),
+			new Food("bad", "bad", R.drawable.candy),
 			new Food("go", "good", R.drawable.cereals),
 			new Food("grow", "good", R.drawable.cheese),
-			new Food("grow", "good", R.drawable.chicken),
-			new Food("xx", "bad", R.drawable.donut),
+			new Food("grow", "good", R.drawable.chicken), 
+			new Food("bad", "bad", R.drawable.donut),
 			new Food("grow", "good", R.drawable.egg),
 			new Food("grow", "good", R.drawable.fish),
-			new Food("xx", "bad", R.drawable.fries),
-			new Food("xx", "bad", R.drawable.hotdog),
+			new Food("bad", "bad", R.drawable.fries),
+			new Food("bad", "bad", R.drawable.hotdog),
 			new Food("glow", "good", R.drawable.pear),
 			new Food("glow", "good", R.drawable.pineapple),
 			new Food("bad", "bad", R.drawable.longanisa),
 			new Food("grow", "good", R.drawable.milk),
-			new Food("xx", "bad", R.drawable.pizza),
-			new Food("xx", "bad", R.drawable.icecream),
-			new Food("xx", "bad", R.drawable.lollipop),
+			new Food("bad", "bad", R.drawable.pizza),
+			new Food("bad", "bad", R.drawable.icecream),
+			new Food("bad", "bad", R.drawable.lollipop),
 			new Food("go", "good", R.drawable.potato),
 			new Food("go", "good", R.drawable.rice),
-			new Food("xx", "bad", R.drawable.soda),
+			new Food("bad", "bad", R.drawable.soda),
 			new Food("glow", "good", R.drawable.strawberry),
-			new Food("glow", "good", R.drawable.watermelon) };
+			new Food("glow", "good", R.drawable.watermelon)};
 
 	private Rect mDisplaySize = new Rect();
 	private RelativeLayout mRootLayout;
@@ -84,17 +91,18 @@ public class Game extends Activity implements OnTouchListener {
 	private float mScale;
 
 	ImageView cloud;
-	ImageView laraopen;
+	ImageView cribeopen;
+	ImageView charOpen;
 	View viewLoad;
 	ImageButton pause;
 	TextView time;
-	TextView score;
+	TextView scoreview;
 	Dialog dialog;
 	ImageButton resume;
 	ImageButton quit;
 	ImageButton menu;
 	RelativeLayout game_layout;
-
+	int timer;
 	ImageView imageView;
 	public boolean isPaused;
 	float elapsedTime;
@@ -105,31 +113,35 @@ public class Game extends Activity implements OnTouchListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
+		readSomeValues();
 		super.onCreate(savedInstanceState);
 		viewLoad = LayoutInflater.from(Game.this).inflate(R.layout.game, null);
 		setContentView(viewLoad);
+		timer = 60;
+		score = 0;
 		elapsedTime = 0;
 		isPaused = false;
 		cloud = (ImageView) findViewById(R.drawable.cloud);
 		pause = (ImageButton) findViewById(R.id.pause);
 		time = (TextView) findViewById(R.id.time);
-		score = (TextView) findViewById(R.id.score);
-
-	/*	p = getIntent().getParcelableExtra("player");
-		if(p.getGender().equals("boy")){
-			p.setImageID(R.drawable.cribeopen);
+		scoreview = (TextView) findViewById(R.id.score);
+		charOpen = (ImageView) findViewById(R.id.laraopen);
+		
+		if(gender.equals("boy")){
+			charOpen.setImageResource(R.drawable.cribeopen);
 			
-		}if(p.getGender().equals("girl")){
-			p.setImageID(R.drawable.laraopen);
-		}*/
-
-		laraopen = (ImageView) findViewById(R.id.laraopen);
-		laraopen.setOnTouchListener(this);
+		}if(gender.equals("girl")){
+			charOpen.setImageResource(R.drawable.laraopen);
+		}
+		
+		charOpen.setOnTouchListener(this);
+		
 
 		animTimer = new Timer();
 		countdownTimer = new Timer();
 		scoreTimer = new Timer();
+
+		// game_layout = (RelativeLayout) findViewById(R.id.game_layout);
 
 		/*
 		 * pause.setOnClickListener(new OnClickListener() {
@@ -148,6 +160,7 @@ public class Game extends Activity implements OnTouchListener {
 				View vLoad = LayoutInflater.from(Game.this).inflate(
 						R.layout.pause, null);
 				dialog.setContentView(vLoad);
+				
 
 				isPaused = true;
 				elapsedTime = 0;
@@ -160,6 +173,9 @@ public class Game extends Activity implements OnTouchListener {
 					@Override
 					public void onClick(View v) {
 
+						// View vLoad = LayoutInflater.from(Game.this).inflate(
+						// R.layout.game, null);
+						// setContentView(R.layout.game);
 						dialog.dismiss();
 						isPaused = false;
 
@@ -173,8 +189,12 @@ public class Game extends Activity implements OnTouchListener {
 
 						dialog.dismiss();
 						Intent intent = new Intent(Game.this, Quit.class);
+						intent.putExtra("scoreview", score);
+						intent.putExtra("good", goodIntake);
+						intent.putExtra("bad", badIntake);
+						
 						startActivity(intent);
-						intent.putExtra("person", p);
+						saveSomeValues();
 					}
 				});
 
@@ -194,7 +214,7 @@ public class Game extends Activity implements OnTouchListener {
 		animTimer.schedule(new ExeTimerTask(), 0, 4000);
 		countdownTimer.schedule(new TimerTimerTask(), 0, 1000);
 		scoreTimer.schedule(new ScoreTimerTask(), 0, 10);
-
+		
 	}
 
 	public void startAnimation(final ImageView aniView) {
@@ -210,6 +230,11 @@ public class Game extends Activity implements OnTouchListener {
 		animator.setStartDelay(delay);
 
 		animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+			int angle = 50 + (int) (Math.random() * 101);
+			int movex = new Random().nextInt(mDisplaySize.right);
+
+			float startTime = 0;
 
 			@Override
 			public void onAnimationUpdate(ValueAnimator animation) {
@@ -232,7 +257,7 @@ public class Game extends Activity implements OnTouchListener {
 				float x1 = aniView.getX();
 				float y1 = aniView.getY();
 
-				float x2 = laraopen.getX();
+				float x2 = charOpen.getX();
 				float y2 = 640;
 
 				float dist = (float) Math.sqrt((x1 - x2) * (x1 - x2)
@@ -243,12 +268,16 @@ public class Game extends Activity implements OnTouchListener {
 					mAllImageViews.remove(aniView);
 					animator.cancel();
 
-					if (!isPaused && ((String) aniView.getTag()).equals("good")) {
-						Constants.score += 100;
-					} else if (!isPaused
-							&& ((String) aniView.getTag()).equals("bad")
-							&& Constants.score > 0) {
-						Constants.score -= 50;
+					if (((String) aniView.getTag()).equals("good")) {
+						score += 100; 
+						goodIntake ++;}
+					else if (((String) aniView.getTag()).equals("bad") && score > 0) {
+						score -= 50;
+						
+					}
+					
+					if (((String) aniView.getTag()).equals("bad")) {
+						badIntake ++;
 					}
 
 				}
@@ -267,16 +296,13 @@ public class Game extends Activity implements OnTouchListener {
 			super.handleMessage(msg);
 
 			int foodViewID = new Random().nextInt(cloud1.length);
-			Drawable f1 = getResources()
-					.getDrawable(cloud1[foodViewID].getId());
+			Drawable f1 = getResources().getDrawable(cloud1[foodViewID].getId());
 
 			int foodViewID2 = new Random().nextInt(cloud1.length);
-			Drawable f2 = getResources().getDrawable(
-					cloud1[foodViewID2].getId());
-
+			Drawable f2 = getResources().getDrawable(cloud1[foodViewID2].getId());
+			
 			int foodViewID3 = new Random().nextInt(cloud1.length);
-			Drawable f3 = getResources().getDrawable(
-					cloud1[foodViewID3].getId());
+			Drawable f3 = getResources().getDrawable(cloud1[foodViewID3].getId()); 
 
 			LayoutInflater inflate = LayoutInflater.from(Game.this);
 			imageView = (ImageView) inflate.inflate(R.layout.ani_image_view,
@@ -291,7 +317,7 @@ public class Game extends Activity implements OnTouchListener {
 
 			imageView1.setImageDrawable(f2);
 			imageView1.setTag(cloud1[foodViewID2].getCategory());
-
+			
 			imageView2.setImageDrawable(f3);
 			imageView2.setTag(cloud1[foodViewID3].getCategory());
 
@@ -336,16 +362,16 @@ public class Game extends Activity implements OnTouchListener {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 
-			if (Constants.timer > 0) {
-				time.setText(Integer.toString(Constants.timer--));
+			if (timer > 0) {
+				time.setText(Integer.toString(timer--));
 			}
-
-			else {
-
-				LayoutInflater inflate = LayoutInflater.from(Game.this);
-				imageView = (ImageView) inflate.inflate(R.layout.quit, null);
-
-			}
+			
+			/*
+			  else { Intent intent = new Intent(Game.this, Quit.class);
+			  startActivity(intent);
+			  
+			  } */
+			 
 
 		}
 	};
@@ -353,10 +379,13 @@ public class Game extends Activity implements OnTouchListener {
 	private Handler scoreHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			score.setText(Integer.toString(Constants.score));
+			scoreview.setText(Integer.toString(score));
 
 		}
 	};
+	
+
+	
 
 	private class ExeTimerTask extends TimerTask {
 		@Override
@@ -384,6 +413,7 @@ public class Game extends Activity implements OnTouchListener {
 			}
 		}
 	}
+	
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
@@ -392,10 +422,10 @@ public class Game extends Activity implements OnTouchListener {
 		switch (eid) {
 		case MotionEvent.ACTION_MOVE:
 
-			LayoutParams mParams = (LayoutParams) laraopen.getLayoutParams();
+			LayoutParams mParams = (LayoutParams) charOpen.getLayoutParams();
 
 			float x = event.getRawX();
-			float offset = laraopen.getWidth() / 2;
+			float offset = charOpen.getWidth() / 2;
 			Point size = new Point();
 			getWindowManager().getDefaultDisplay().getSize(size);
 			int loc = 0;
@@ -410,12 +440,56 @@ public class Game extends Activity implements OnTouchListener {
 			}
 
 			mParams.leftMargin = loc;
-			laraopen.setLayoutParams(mParams);
+			charOpen.setLayoutParams(mParams);
 			break;
 		default:
 			break;
 		}
 		return true;
 	}
-
+	public void readSomeValues()
+	{
+		BufferedReader input = null;
+    	try {
+    		input = new BufferedReader(new InputStreamReader(this.openFileInput("nomnomnomfile")));
+    	    gender = input.readLine();
+    	    stage = input.readLine();
+    	    score = Integer.parseInt(input.readLine());
+    	    goodIntake = Integer.parseInt(input.readLine());
+    	    badIntake = Integer.parseInt(input.readLine());
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	} finally {
+    		if (input != null) {
+    			try {
+    				input.close();
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	}
+	}
+	public void saveSomeValues()
+	{
+		String eol = System.getProperty("line.separator");
+    	BufferedWriter writer = null;
+    	try {
+    		writer = new BufferedWriter(new OutputStreamWriter(this.openFileOutput("nomnomnomfile", Context.MODE_PRIVATE)));
+    		writer.write(gender+eol);
+    		writer.write(stage+eol);
+    		writer.write(score+eol);
+    		writer.write(goodIntake+eol);
+    		writer.write(badIntake+eol);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	} finally {
+    		if (writer != null) {
+    			try {
+    				writer.close();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    		}
+    	}
+	}
 }

@@ -10,7 +10,7 @@
          android:id="@+id/resume"
          android:layout_width="160dp"
          android:layout_height="65dp"
-         android:layout_above="@+id/quit"
+        android:layout_centerVertical="true"
          android:layout_centerHorizontal="true"
          android:background="@null"
          android:src="@drawable/resume" />
@@ -19,10 +19,9 @@
          android:id="@+id/quit"
          android:layout_width="160dp"
          android:layout_height="65dp"
-         android:layout_above="@+id/menu"
-         android:layout_alignParentBottom="true"
-           android:layout_marginBottom="150dp"
-         android:layout_alignLeft="@+id/resume"
+         android:layout_below="@+id/resume" 
+         android:layout_centerHorizontal="true"
+         android:layout_marginTop="-5dp"
          android:background="@null"
          android:src="@drawable/quit" />
 

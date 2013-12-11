@@ -1,8 +1,13 @@
 package com.example.nomnomgui;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
 import com.example.entity.Person;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +18,8 @@ public class Start extends Activity {
 	ImageButton boy;
 	ImageButton girl;
 	
-	
+	String gender = "", stage = "";
+	int score = 0,goodIntake = 0,badIntake = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +34,10 @@ public class Start extends Activity {
 
 			@Override
 			public void onClick(View arg0) {	
-			Intent intent = new Intent(Start.this, Level.class);
-			//Person boyp = new Person("boy", 0, 0);
-		//	intent.putExtra("player", boyp);
+			Intent intent = new Intent(Start.this, Level.class);;
 			startActivity(intent);
-			//session the boyp
+			gender = "boy";
+			saveSomeValues();
 			}
 		});
 		
@@ -41,12 +46,33 @@ public class Start extends Activity {
 			@Override
 			public void onClick(View arg0) {	
 				Intent intent = new Intent(Start.this, Level.class);
-			//	Person girlp = new Person("girl",0,0);
-				//intent.putExtra("player", girlp);
 				startActivity(intent);
-				//session the girlp
+				gender = "girl";
+				saveSomeValues();
 				}
 			});
 	}
-			
+	public void saveSomeValues()
+	{
+		String eol = System.getProperty("line.separator");
+    	BufferedWriter writer = null;
+    	try {
+    		writer = new BufferedWriter(new OutputStreamWriter(this.openFileOutput("nomnomnomfile", Context.MODE_PRIVATE)));
+    		writer.write(gender+eol);
+    		writer.write(stage+eol);
+    		writer.write(score+eol);
+    		writer.write(goodIntake+eol);
+    		writer.write(badIntake+eol);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	} finally {
+    		if (writer != null) {
+    			try {
+    				writer.close();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    		}
+    	}
+	}		
 }
